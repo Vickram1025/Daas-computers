@@ -5,11 +5,7 @@ import { motion } from 'framer-motion';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import b1 from '../assets/acer-banner.png';
-import b2 from '../assets/asus-banner.png';
-import b3 from '../assets/dell_bannerjpg.png';
-import b4 from '../assets/hp-banner.png';
-import b5 from '../assets/Lenovo_banner.png';
+
 
 import laptopImg from '../assets/PopularCategories/laptop.avif';
 import computerImg from '../assets/PopularCategories/computer.avif';
@@ -20,58 +16,47 @@ import D from '../assets/our brand/dell-logo.png';
 import h from '../assets/our brand/hp-logo.png';
 import l from '../assets/our brand/lenova.png';
 import Asus from '../assets/our brand/asus.jpg';
+import brandsvideo from '../video/brands-video.mp4'
 
 const fadeRight = {
   initial: { opacity: 0, x: 50 },
   animate: { opacity: 1, x: 0 },
 };
 
+
 const BannerSlider = () => {
-  const banners = [
-    { id: 1, img: b1, name: 'Acer Banner' },
-    { id: 2, img: b2, name: 'Asus Banner' },
-    { id: 3, img: b3, name: 'Dell Banner' },
-    { id: 4, img: b4, name: 'HP Banner' },
-    { id: 5, img: b5, name: 'Lenovo Banner' },
-  ];
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 200,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    arrows: true,
-    fade: true,
-    responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 1 } },
-      { breakpoint: 640, settings: { slidesToShow: 1 } },
-    ],
-  };
-
   return (
-    <div className="w-full h-[600px]" aria-label="Brand Banners Section">
-      <Slider {...settings} className="relative overflow-hidden">
-        {banners.map((banner) => (
-          <motion.div
-            key={banner.id}
-            {...fadeRight}
-            className="w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[550px]"
-          >
-            <img
-              src={banner.img}
-              alt={banner.name}
-              className="w-full h-full object-fill"
-              
-            />
-          </motion.div>
-        ))}
-      </Slider>
+    <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden">
+      {/* Background Video */}
+      <video
+        src={brandsvideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute top-0 left-0 w-full h-full object-cover"
+      />
+
+      {/* Overlay Content */}
+      {/* <div className="relative z-10 flex items-center justify-center h-full bg-black/60 text-white text-center px-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold italic tracking-wide opacity-90">
+          Daas Computers Banner
+        </h1>
+      </div> */}
     </div>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
 
 const PopularCategories = () => {
   const categories = [
