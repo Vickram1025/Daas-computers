@@ -31,7 +31,6 @@ const accessoryData = {
     { name: "Redgear Drag", image: placeholderImg, brand: "Redgear", rating: 4.4, availability: "In Stock", description: "Gaming mouse with RGB lighting." },
     { name: "Amkette Evo", image: placeholderImg, brand: "Amkette", rating: 3.7, availability: "In Stock", description: "Compact mouse with precise tracking." },
   ],
-
   Monitors: [
     { name: "Samsung Monitor", image: monitor1, brand: "Samsung", rating: 4.5, availability: "In Stock", description: "24-inch FHD monitor with vibrant colors." },
     { name: "LG 22MP68", image: placeholderImg, brand: "LG", rating: 4.3, availability: "In Stock", description: "IPS panel with slim bezels." },
@@ -44,7 +43,6 @@ const accessoryData = {
     { name: "Lenovo D22-20", image: placeholderImg, brand: "Lenovo", rating: 4.0, availability: "In Stock", description: "Budget monitor with tilt adjustment." },
     { name: "Philips 223V5LHSB2", image: placeholderImg, brand: "Philips", rating: 3.8, availability: "Out of Stock", description: "Value monitor with HDMI input." },
   ],
-
   "Laptop Bags": [
     { name: "HP Bag", image: bag1, brand: "HP", rating: 4.3, availability: "Out of Stock", description: "Padded bag for 15.6\" laptops." },
     { name: "Dell Bag", image: bag3, brand: "Dell", rating: 4.0, availability: "In Stock", description: "Water-resistant backpack with laptop sleeve." },
@@ -57,7 +55,6 @@ const accessoryData = {
     { name: "Wildcraft 32L", image: placeholderImg, brand: "Wildcraft", rating: 4.3, availability: "In Stock", description: "Durable bag with organizer pocket." },
     { name: "Puma Backpack", image: placeholderImg, brand: "Puma", rating: 4.1, availability: "In Stock", description: "Sporty design with laptop protection." },
   ],
-
   Keyboards: [
     { name: "Logitech K120", image: placeholderImg, brand: "Logitech", rating: 4.2, availability: "In Stock", description: "Full-size keyboard with low-profile keys." },
     { name: "Dell KB216", image: placeholderImg, brand: "Dell", rating: 4.1, availability: "In Stock", description: "Spill-resistant USB keyboard." },
@@ -109,23 +106,23 @@ const Accessories = () => {
   }, [visibleCount]);
 
   return (
-    <div className="min-h-screen bg-blue-100 px-4 py-10">
+    <div className="min-h-screen bg-blue-100 px-4 py-10 sm:px-6 md:px-10 lg:px-16">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl p-5 sm:text-4xl md:text-5xl  font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 mb-6">
           Shop Computer Accessories
         </h1>
 
-        {/* Category Tabs */}
-        <div className="flex flex-wrap justify-center gap-4 mb-10">
+        {/* Tabs */}
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 mb-10">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
-              className={`px-4 py-2 flex items-center gap-2 rounded-full text-sm font-medium shadow-sm transition 
-                ${activeCategory === category
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-gray-800 border border-gray-300 hover:bg-blue-50"
-                }`}
+              className={`px-4 py-2 flex items-center gap-2 rounded-full text-sm sm:text-base font-medium shadow-sm transition 
+              ${activeCategory === category
+                ? "bg-blue-600 text-white"
+                : "bg-white text-gray-800 border border-gray-300 hover:bg-blue-50"
+              }`}
             >
               <span className="text-lg">{categoryIcons[category]}</span>
               {category}
@@ -133,26 +130,26 @@ const Accessories = () => {
           ))}
         </div>
 
-        {/* Grid Display */}
-        <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+        {/* Grid */}
+        <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
           {visibleItems.map((item, index) =>
             item ? (
               <div
                 key={index}
-                className="bg-white p-4 rounded-xl shadow hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+                className="bg-white p-3 sm:p-4 rounded-xl shadow hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
               >
                 <img
                   src={item.image}
                   alt={item.name}
                   onError={(e) => (e.target.src = placeholderImg)}
-                  className="w-full h-40 object-cover rounded-lg mb-3"
+                  className="w-full h-36 sm:h-40 object-cover rounded-lg mb-3"
                 />
-                <h3 className="text-base font-semibold text-gray-800 mb-1">{item.name}</h3>
-                <p className="text-sm text-gray-500 mb-1">Brand: {item.brand}</p>
-                <p className="text-sm text-yellow-600 flex items-center gap-1">
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-1">{item.name}</h3>
+                <p className="text-xs sm:text-sm text-gray-500 mb-1">Brand: {item.brand}</p>
+                <p className="text-xs sm:text-sm text-yellow-600 flex items-center gap-1">
                   <FaStar className="text-yellow-500" /> {item.rating}
                 </p>
-                <p className={`text-sm font-medium flex items-center gap-1 mb-2 ${item.availability === "In Stock" ? "text-green-600" : "text-red-500"}`}>
+                <p className={`text-xs sm:text-sm font-medium flex items-center gap-1 mb-2 ${item.availability === "In Stock" ? "text-green-600" : "text-red-500"}`}>
                   {item.availability === "In Stock" ? <FaCheckCircle /> : <FaTimesCircle />}
                   {item.availability}
                 </p>
@@ -161,7 +158,7 @@ const Accessories = () => {
             ) : (
               <div
                 key={index}
-                className="bg-white p-4 rounded-xl border-dashed border-2 border-gray-300 text-gray-400 flex items-center justify-center text-sm h-52 text-center italic"
+                className="bg-white p-4 rounded-xl border-dashed border-2 border-gray-300 text-gray-400 flex items-center justify-center text-sm h-48 sm:h-52 text-center italic"
               >
                 Coming Soon
               </div>
@@ -169,7 +166,7 @@ const Accessories = () => {
           )}
         </div>
 
-        {/* Show More Button */}
+        {/* Button */}
         {canShowMore && (
           <div className="text-center mt-8">
             <button

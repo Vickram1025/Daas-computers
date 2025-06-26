@@ -1,0 +1,8 @@
+/* App.css or index.css */
+.leaflet-routing-container {
+  margin-top: 6rem !important; /* Push below navbar */
+  max-height: 400px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.95);
+  font-size: 0.9rem;
+}

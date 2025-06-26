@@ -3,20 +3,15 @@ import "./index.css";
 import "./App.css";
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import ScrollToTop from "./ScrollToTop "
+import ScrollToTop from "./ScrollToTop "; // ✅ Corrected
 
 import App from "./App";
-
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <BrowserRouter>
-
-  <ScrollToTop />
-  <App />
+    <ScrollToTop />
+    <App />
   </BrowserRouter>
- 
-    );
-
-    
+);

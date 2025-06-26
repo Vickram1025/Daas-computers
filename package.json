@@ -11,6 +11,7 @@
     "browser-router": "^0.2.0",
     "framer-motion": "^12.16.0",
     "leaflet": "^1.9.4",
+    "leaflet-defaulticon-compatibility": "^0.1.2",
     "leaflet-routing-machine": "^3.2.12",
     "lucide-react": "^0.474.0",
     "my-app": "file:",
