@@ -1,13 +1,23 @@
+
+
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .leaflet-routing-container {
-    margin-top: 6rem !important;
-    max-height: 400px;
-    overflow-y: auto;
-    background: rgba(255, 255, 255, 0.95);
-    font-size: 0.9rem;
-  }
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+
+
+
+.toast-position {
+  position: fixed !important;
+  top: 15% !important;
+  right: 0% !important;
+
+  width: auto !important;
+  
 }
