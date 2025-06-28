@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -7,6 +8,8 @@ import '../index.css'; // Assuming this contains your custom colors and basic st
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { toast } from 'react-toastify';
+
+import backimage from '../assets/back1.jpg'
 
 // Fix for default marker icon in Leaflet with Webpack/CRA
 delete L.Icon.Default.prototype._getIconUrl;
@@ -192,9 +195,9 @@ const BranchList = ({ branches, selectedBranch, onSelectBranch }) => {
   }
   return (
     <ul className="flex flex-col gap-2 ml-4 mb-3">
-      {branches.map((branch) => ( // Removed index, using branch.name as key for stability
+      {branches.map((branch) => (
         <motion.li
-          key={branch.name} // Using branch name as key assuming it's unique
+          key={branch.name}
           className={`mt-3 px-3 py-2 bg-gray-100 border border-gray-300 rounded-md cursor-pointer text-sm text-left text-gray-600 transition-all duration-300 hover:bg-gray-200 hover:shadow-[0_1px_6px_rgba(0,0,0,0.1)] ${
             selectedBranch && selectedBranch.name === branch.name
               ? 'bg-gradient-to-r from-indigo-500 to-teal-500 text-white border-indigo-500 font-semibold shadow-[0_2px_10px_rgba(0,0,0,0.15)]'
@@ -203,9 +206,9 @@ const BranchList = ({ branches, selectedBranch, onSelectBranch }) => {
           onClick={() => onSelectBranch(branch)}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }} // Removed index * 0.05 delay as index is no longer explicit
-          tabIndex={0} // Make list items focusable
-          role="button" // Indicate that it's interactive
+          transition={{ duration: 0.3 }}
+          tabIndex={0}
+          role="button"
           aria-pressed={selectedBranch && selectedBranch.name === branch.name}
         >
           {branch.name}
@@ -254,7 +257,7 @@ const BranchMap = ({ branches, selectedBranch, userLocation, selectedDistrict, a
 
   const mapMarkers = branches
     .filter((b) => !selectedDistrict || b.district === selectedDistrict)
-    .map((branch) => { // Removed index, using branch.name as key for stability
+    .map((branch) => {
       const isHighlighted = branch.name.includes('DAAS COMPUTERS');
       const isSelected = selectedBranch && branch.name === selectedBranch.name;
 
@@ -266,7 +269,7 @@ const BranchMap = ({ branches, selectedBranch, userLocation, selectedDistrict, a
 
       return (
         <Marker
-          key={branch.name} // Using branch name for key for consistency
+          key={branch.name}
           position={[branch.lat, branch.lng]}
           icon={iconToUse}
           ref={(ref) => {
@@ -274,7 +277,6 @@ const BranchMap = ({ branches, selectedBranch, userLocation, selectedDistrict, a
           }}
           eventHandlers={{
             add: (e) => {
-              // Add bounce animation only when a new selected branch marker is added/rendered
               if (isSelected) {
                 const markerEl = e.target._icon;
                 if (markerEl) {
@@ -318,7 +320,7 @@ const BranchMap = ({ branches, selectedBranch, userLocation, selectedDistrict, a
       center={center}
       zoom={INITIAL_MAP_ZOOM}
       scrollWheelZoom
-      className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] rounded-lg shadow-custom-lg z-0"
+      className="w-full h-[400px] sm:h-[450px] md:h-[500px] lg:h-[600px] rounded-lg shadow-custom-lg z-0"
       ref={mapRef}
     >
       <Recenter position={center} />
@@ -341,41 +343,6 @@ const BranchMap = ({ branches, selectedBranch, userLocation, selectedDistrict, a
       )}
 
       {mapMarkers}
-      <style>
-        {`
-          @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-              transform: translateY(0);
-            }
-            40% {
-              transform: translateY(-10px);
-            }
-            60% {
-              transform: translateY(-5px);
-            }
-          }
-
-          @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 rgba(255, 215, 0, 0.4); }
-            50% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
-            100% { box-shadow: 0 0 0 rgba(255, 215, 0, 0.4); }
-          }
-
-          .nearest-branch-pulse {
-            animation: pulse-glow 2s infinite ease-in-out;
-          }
-
-          .bounce-animation {
-            animation: bounce 1.5s ease-in-out;
-          }
-
-          @media (max-width: 640px) {
-            .leaflet-control-attribution {
-              display: none;
-            }
-          }
-        `}
-      </style>
     </MapContainer>
   );
 };
@@ -391,12 +358,11 @@ const Sidebar = ({
   onSearchAddress,
   onLocateMe,
   userLocation,
-  locationError, // New prop for location error messages
-  isLocating, // New prop for loading state
+  locationError,
+  isLocating,
 }) => {
   const [expandedDistrict, setExpandedDistrict] = useState(null);
 
-  // Memoize branch filtering to prevent unnecessary re-renders
   const branchesInExpandedDistrict = useMemo(() => {
     return branches.filter((b) => b.district === expandedDistrict);
   }, [branches, expandedDistrict]);
@@ -427,7 +393,6 @@ const Sidebar = ({
 
   const sortedDistricts = useMemo(() => {
     return [...districts].sort((a, b) => {
-      // Prioritize "Vellore" and "Arani"
       if (a.toLowerCase() === 'vellore') return -1;
       if (b.toLowerCase() === 'vellore') return 1;
       if (a.toLowerCase() === 'arani') return -1;
@@ -437,7 +402,7 @@ const Sidebar = ({
   }, [districts]);
 
   return (
-    <div className="w-[300px] p-8 bg-gradient-to-br from-custom-blue-dark to-custom-blue-light border-r border-gray-300 h-full overflow-y-auto shadow-custom-sm rounded-r-lg z-10 relative">
+    <div className="w-full p-4 bg-gradient-to-br from-custom-blue-dark to-custom-blue-light border-b md:border-r md:border-b-0 border-gray-300 h-auto md:h-full overflow-y-auto shadow-custom-sm rounded-t-lg md:rounded-t-none md:rounded-r-lg z-10 relative">
       <div className="text-xl font-semibold mb-6 text-center text-custom-gray uppercase tracking-wide">
         Our Showrooms
       </div>
@@ -496,7 +461,7 @@ const Sidebar = ({
                 id={`branch-list-${d.replace(/\s+/g, '-')}`}
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }} // Need to use AnimatePresence for exit animations if unmounting
+                exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
               >
                 <BranchList branches={branchesInExpandedDistrict} selectedBranch={selectedBranch} onSelectBranch={onSelectBranch} />
@@ -520,8 +485,8 @@ const Showroom = () => {
   const [selectedBranch, setSelectedBranch] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [accuracy, setAccuracy] = useState(null);
-  const [locationError, setLocationError] = useState(null); // State for location errors
-  const [isLocating, setIsLocating] = useState(false); // State for loading during geolocation
+  const [locationError, setLocationError] = useState(null);
+  const [isLocating, setIsLocating] = useState(false);
 
   const filteredBranches = useMemo(() => {
     if (!selectedDistrict) return branches;
@@ -530,12 +495,11 @@ const Showroom = () => {
 
   const handleSearchAddress = useCallback(async (address) => {
     const normalizedAddress = address.trim().toLowerCase();
-    setLocationError(null); // Clear previous errors
-    setSelectedBranch(null); // Deselect any branch
-    setUserLocation(null); // Clear user location
+    setLocationError(null);
+    setSelectedBranch(null);
+    setUserLocation(null);
     setAccuracy(null);
 
-    // Handle specific district searches
     if (normalizedAddress === 'vellore') {
       setSelectedDistrict('Vellore');
       return;
@@ -554,7 +518,7 @@ const Showroom = () => {
       if (data && data.length > 0) {
         const { lat, lon } = data[0];
         setUserLocation([parseFloat(lat), parseFloat(lon)]);
-        setSelectedDistrict(null); // If searching for specific address, clear district selection
+        setSelectedDistrict(null);
       } else {
         setLocationError('Address not found. Please try a different search term.');
       }
@@ -562,13 +526,13 @@ const Showroom = () => {
       console.error('Error geocoding address:', error);
       setLocationError('Error finding address. Please check your connection or try again.');
     }
-  }, []); // Empty dependency array means this function is created once
+  }, []);
 
   const handleLocateMe = useCallback(async () => {
     setIsLocating(true);
     setLocationError(null);
-    setSelectedBranch(null); // Clear selected branch when locating user
-    setSelectedDistrict(null); // Clear selected district when locating user
+    setSelectedBranch(null);
+    setSelectedDistrict(null);
 
     const geolocationOptions = {
       enableHighAccuracy: true,
@@ -584,7 +548,7 @@ const Showroom = () => {
           setAccuracy(accuracy);
           setIsLocating(false);
 
-          if (accuracy > 500) { // More precise threshold for warning
+          if (accuracy > 500) {
             toast.warn(
               'Your location was detected, but it might not be very accurate. For better results, ensure good GPS signal or Wi-Fi.',
             );
@@ -605,8 +569,8 @@ const Showroom = () => {
 
           setLocationError(errorMessage + ' Attempting IP-based fallback...');
 
-          // Fallback to IP-based location if geolocation fails
           try {
+            // Replace 'YOUR_IPINFO_API_TOKEN' with your actual token
             const ipRes = await fetch('https://ipinfo.io/json?token=YOUR_IPINFO_API_TOKEN');
             if (!ipRes.ok) throw new Error(`IPinfo HTTP error! status: ${ipRes.status}`);
             const ipData = await ipRes.json();
@@ -614,7 +578,7 @@ const Showroom = () => {
             if (ipData.loc) {
               const [lat, lng] = ipData.loc.split(',').map(Number);
               setUserLocation([lat, lng]);
-              setAccuracy(5000); // IP-based location is less accurate
+              setAccuracy(5000);
               setLocationError('Location estimated using IP address. Accuracy may vary.');
             } else {
               setLocationError("Couldn't determine your location via IP. Please try again.");
@@ -630,17 +594,20 @@ const Showroom = () => {
       setIsLocating(false);
       setLocationError('Geolocation is not supported by your browser.');
     }
-  }, []); // Empty dependency array for useCallback
+  }, []);
 
   const handleSelectBranch = useCallback((branch) => {
     setSelectedBranch(branch);
-    setUserLocation(null); // Clear user location when a branch is selected
+    setUserLocation(null);
     setAccuracy(null);
-  }, []); // Empty dependency array for useCallback
+  }, []);
 
   return (
-    <div className="m-0 p-0 box-border font-roboto h-screen overflow-hidden text-gray-800 flex justify-center items-center bg-gray-100">
-      <div className="w-[95%] max-w-[1200px] h-[90vh] p-5 bg-[rgba(250,248,248,0.95)] rounded-2xl shadow-custom-lg flex flex-col gap-5 relative z-10">
+    <div 
+     style={{ backgroundImage: `url(${backimage})` }}
+    
+    className="m-0 p-0 box-border font-roboto min-h-screen overflow-hidden text-gray-800 flex justify-center items-center  bg-cover bg-center h-screen">
+      <div className="w-[95%] max-w-[1200px] h-[90vh] p-5 bg-[rgba(250,248,248,0.95)] rounded-2xl shadow-custom-lg flex flex-col gap-5 relative z-10 sm:h-auto sm:min-h-[90vh] md:h-[90vh] md:min-h-[unset]">
         <motion.h1
           className="text-4xl font-bold text-white text-center p-6 bg-gradient-to-br from-custom-blue-dark to-custom-blue-light rounded-2xl shadow-custom-md relative overflow-hidden z-20"
           initial={{ opacity: 0, y: -30 }}
@@ -652,8 +619,10 @@ const Showroom = () => {
           <span className="relative z-20">Find Your Nearest Daas Computer Store</span>
         </motion.h1>
 
-        <div className="flex-1 flex flex-col md:flex-row gap-5 overflow-hidden">
-          <div className="w-full md:w-[340px] bg-gradient-to-br from-custom-blue-dark to-custom-blue-light rounded-2xl p-4 overflow-hidden h-full border border-gray-300 shadow-custom-sm text-custom-gray flex flex-col items-center z-10 relative">
+        <div className="flex-1 flex flex-col md:flex-row gap-5 overflow-hidden desktop-flex-stretch">
+          {/* Sidebar */}
+          <div className="w-full md:w-[340px] bg-gradient-to-br from-custom-blue-dark to-custom-blue-light rounded-2xl p-4 overflow-y-auto h-auto md:h-full border border-gray-300 shadow-custom-sm text-custom-gray z-10 relative
+            max-h-[500px] sm:min-h-[250px]">
             <Sidebar
               districts={districts}
               selectedDistrict={selectedDistrict}
@@ -669,7 +638,8 @@ const Showroom = () => {
             />
           </div>
 
-          <div className="w-full md:w-auto flex-1 bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden">
+          {/* Map */}
+          <div className="w-full md:w-auto flex-1 bg-gradient-to-br from-custom-blue-dark to-custom-blue-light border border-gray-300 rounded-lg shadow-md overflow-hidden">
             <BranchMap
               branches={filteredBranches}
               userLocation={userLocation}
@@ -721,41 +691,105 @@ const Showroom = () => {
             animation: bounce 1.5s ease-in-out;
           }
 
-          /* Responsive adjustments for smaller screens */
+          /* General mobile styles (max-width: 767px) */
           @media (max-width: 767px) {
-            .md\\:w-\\[340px\\] {
-              width: 100%;
-              min-height: 350px;
+            .flex-col {
+              flex-direction: column; /* Stack sidebar and map vertically */
             }
-            .md\\:flex-row {
-              flex-direction: column;
-            }
-            .leaflet-container {
-              height: 400px !important; /* Ensure map has a fixed height on mobile */
-            }
-          }
 
-          @media (min-width: 768px) {
-            .md\\:w-\\[340px\\] {
-              min-height: 600px;
+            /* Main container adjusts height for scrolling content */
+            .sm\\:h-auto {
+              height: auto;
             }
-            .leaflet-container {
-              height: 600px !important;
+            .sm\\:min-h-\\[90vh\\] {
+              min-height: 90vh; /* Ensure overall container takes most of the viewport, allows scroll */
             }
-          }
 
-          @media (min-width: 1024px) {
-            .lg\\:h-\\[700px\\] {
-              height: 700px;
+            /* Sidebar specific styles for phone */
+            .md\\:w-\\[340px\\] { /* This class is applied, but overridden by specific media query */
+              width: 100%; /* Sidebar takes full width */
+              max-height: 50vh; /* Limit sidebar height to half viewport height */
+              min-height: 250px; /* Minimum height for the sidebar on small screens */
+              overflow-y: auto; /* Enable scrolling for sidebar content */
+              border-bottom: 1px solid #ccc; /* Add a separator */
+              border-right: none;
+              border-radius: 0.75rem 0.75rem 0 0; /* Rounded top corners, flat bottom */
             }
-            .leaflet-container {
-              height: 700px !important;
-            }
-          }
 
-          @media (max-width: 640px) {
+            /* Map specific styles for phone */
+            .leaflet-container {
+              height: 400px !important; /* Fixed map height for mobile */
+              min-height: 300px; /* Ensure map is always visible and larger */
+              border-radius: 0 0 0.75rem 0.75rem; /* Rounded bottom corners, flat top */
+            }
             .leaflet-control-attribution {
-              display: none;
+              display: none; /* Hide attribution on small screens */
+            }
+          }
+
+          /* Tablet styles (min-width: 768px and max-width: 1023px) */
+          @media (min-width: 768px) and (max-width: 1023px) {
+            /* Main container */
+            .md\\:h-\\[90vh\\] {
+              height: 90vh; /* Fixed height for tablet, centered on page */
+            }
+            .md\\:min-h-\\[unset\\] {
+                min-height: unset; /* Override mobile min-height */
+            }
+
+            .md\\:flex-row {
+              flex-direction: row; /* Layout sidebar and map horizontally */
+            }
+
+            /* Sidebar specific styles for tablet */
+            .md\\:w-\\[340px\\] {
+              width: 340px; /* Sidebar retains its width */
+              min-height: 600px; /* Specific minimum height for tablet sidebar as requested */
+              height: auto; /* Allow content to dictate height, but min-height ensures space */
+              border-right: 1px solid #ccc; /* Add a right border for separation */
+              border-bottom: none;
+              border-radius: 0.75rem; /* Full rounded corners */
+            }
+
+            /* Map specific styles for tablet */
+            .leaflet-container {
+              height: 600px !important; /* Make map height match sidebar for tablet */
+              min-height: 400px;
+              border-radius: 0.75rem; /* Full rounded corners */
+            }
+          }
+
+          /* Desktop styles (min-width: 1024px) */
+          @media (min-width: 1024px) {
+            /* Main container parent of flex items (sidebar and map) */
+            /* Ensure the flex container itself takes full available height in its parent */
+            .desktop-flex-stretch {
+                height: 100%; /* Make this flex container fill the space given by its parent (.h-[90vh]) */
+                display: flex;
+                flex-direction: row;
+                align-items: stretch; /* Stretch children to fill height */
+            }
+
+            /* Sidebar specific styles for desktop */
+            .md\\:w-\\[340px\\] {
+              width: 340px; /* Sidebar fixed width */
+              height: 100%; /* Make sidebar fill the height of 'desktop-flex-stretch' */
+              min-height: unset; /* Ensure it's not restricted by tablet/mobile min-heights */
+              border-right: 1px solid #ccc;
+              border-bottom: none;
+              border-radius: 0.75rem 0 0 0.75rem; /* Rounded left and right-top corners */
+            }
+
+            /* Map specific styles for desktop */
+            .leaflet-container {
+              height: 100% !important; /* Map fills remaining height of parent flex item */
+              min-height: 600px; /* Ensure a minimum size */
+              border-radius: 0 0.75rem 0.75rem 0; /* Rounded right and bottom-left corners */
+            }
+
+            /* Apply blue gradient background to both sidebar and map container */
+            .md\\:w-\\[340px\\], .flex-1 {
+              background: linear-gradient(to bottom right, var(--custom-blue-dark), var(--custom-blue-light));
             }
           }
         `}

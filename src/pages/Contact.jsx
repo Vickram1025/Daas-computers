@@ -34,7 +34,7 @@ const ContactDetails = () => {
       icon: <Mail className="text-blue-600 w-8 h-8" />,
       title: 'Email',
       desc: 'daascomputers@gmail.com',
-      link: 'mailto:daascomputers@gmail.com?subject=Support%20Request&body=Hi%20Dass%20Computer%2C%0A%0AI%20need%20assistance%20with...',
+      link: 'https:daascomputers@gmail.com',
     },
   ];
 
@@ -56,8 +56,12 @@ const ContactDetails = () => {
           <motion.a
             key={i}
             href={item.link}
-            target={item.link.startsWith("http") ? "_blank" : undefined}
-            rel={item.link.startsWith("http") ? "noopener noreferrer" : undefined}
+            target={
+              item.link.startsWith("http") || item.link.startsWith("mailto:")
+                ? "_blank"
+                : undefined
+            }
+            rel="noopener noreferrer"
             className="flex flex-col items-center text-center hover:scale-105 transition-transform duration-200"
             custom={i + 1}
             initial="hidden"
@@ -101,14 +105,14 @@ const Contact = () => {
 
     try {
       await axios.post(
-        "https://daascomputers.onrender.com/api/customers/contact",
+        'https://dsaas.onrender.com/api/customers/contact',
         formData
       );
 
-      toast.success("Dass Computers received your message!");
+      toast.success('Dass Computers received your message!');
       setFormData({ name: '', email: '', mobile: '', message: '' });
     } catch (err) {
-      const msg = err.response?.data?.message || "Something went wrong";
+      const msg = err.response?.data?.message || 'Something went wrong';
       toast.error(`Failed to send message: ${msg}`);
     } finally {
       setIsSending(false);
@@ -183,11 +187,11 @@ const Contact = () => {
               whileTap={{ scale: isSending ? 1 : 0.95 }}
               className={`${
                 isSending
-                  ? "bg-blue-300 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
+                  ? 'bg-blue-300 cursor-not-allowed'
+                  : 'bg-blue-600 hover:bg-blue-700'
               } text-white font-semibold px-6 py-2 rounded transition`}
             >
-              {isSending ? "Processing..." : "Send Message"}
+              {isSending ? 'Processing...' : 'Send Message'}
             </motion.button>
           </form>
         </motion.div>

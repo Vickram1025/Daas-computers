@@ -151,7 +151,7 @@ const Navbar = () => {
                 onClick={() => setIsOpen(false)}
                 className={`block font-medium px-3 py-2 rounded-md transition-all duration-200 ${
                   isActive(item.path)
-                    ? 'text-yellow-300 border-b-2 border-yellow-300'
+                    ? 'text-yellow-300 border-b-2 border-yellow-300 w-28'
                     : 'text-white hover:text-yellow-300'
                 }`}
               >

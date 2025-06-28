@@ -27,7 +27,7 @@ const About = () => {
         {/* Page Title */}
         <motion.h1
           {...fadeLeft}
-          className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"
+          className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-center text-blue-600"
         >
           About Dass Computer Stores
         </motion.h1>
