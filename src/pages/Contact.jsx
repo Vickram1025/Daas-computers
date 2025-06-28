@@ -117,7 +117,7 @@ const Contact = () => {
 
   return (
     <div className="bg-blue-100 min-h-screen px-2 sm:px-4 py-1">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-5 items-stretch">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-5 items-">
         {/* Left Card - Contact Details */}
         <ContactDetails />
 

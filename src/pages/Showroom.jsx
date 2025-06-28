@@ -4,7 +4,6 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { motion } from 'framer-motion';
 import '../index.css'; // Assuming this contains your custom colors and basic styles
-
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { toast } from 'react-toastify';
@@ -319,7 +318,7 @@ const BranchMap = ({ branches, selectedBranch, userLocation, selectedDistrict, a
       center={center}
       zoom={INITIAL_MAP_ZOOM}
       scrollWheelZoom
-      className="w-full h-screen rounded-lg shadow-custom-lg z-0" // Added z-0 here
+      className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] rounded-lg shadow-custom-lg z-0"
       ref={mapRef}
     >
       <Recenter position={center} />
@@ -438,7 +437,7 @@ const Sidebar = ({
   }, [districts]);
 
   return (
-    <div className="w-[300px] p-8 bg-gradient-to-br from-custom-blue-dark to-custom-blue-light border-r border-gray-300 h-full overflow-y-auto shadow-custom-sm rounded-r-lg z-10 relative"> {/* Added z-10 and relative */}
+    <div className="w-[300px] p-8 bg-gradient-to-br from-custom-blue-dark to-custom-blue-light border-r border-gray-300 h-full overflow-y-auto shadow-custom-sm rounded-r-lg z-10 relative">
       <div className="text-xl font-semibold mb-6 text-center text-custom-gray uppercase tracking-wide">
         Our Showrooms
       </div>
@@ -586,14 +585,9 @@ const Showroom = () => {
           setIsLocating(false);
 
           if (accuracy > 500) { // More precise threshold for warning
-            
-            
-  toast.warn(
-    'Your location was detected, but it might not be very accurate. For better results, ensure good GPS signal or Wi-Fi.',
-   
-  );
-
-
+            toast.warn(
+              'Your location was detected, but it might not be very accurate. For better results, ensure good GPS signal or Wi-Fi.',
+            );
           }
         },
         async (error) => {
@@ -613,7 +607,6 @@ const Showroom = () => {
 
           // Fallback to IP-based location if geolocation fails
           try {
-            // NOTE: Replace 'YOUR_IPINFO_API_TOKEN' with your actual token from ipinfo.io
             const ipRes = await fetch('https://ipinfo.io/json?token=YOUR_IPINFO_API_TOKEN');
             if (!ipRes.ok) throw new Error(`IPinfo HTTP error! status: ${ipRes.status}`);
             const ipData = await ipRes.json();
@@ -647,9 +640,9 @@ const Showroom = () => {
 
   return (
     <div className="m-0 p-0 box-border font-roboto h-screen overflow-hidden text-gray-800 flex justify-center items-center bg-gray-100">
-      <div className="w-[95%] max-w-[1200px] h-[90vh] p-5 bg-[rgba(250,248,248,0.95)] rounded-2xl shadow-custom-lg flex flex-col gap-5 relative z-10"> {/* Added relative z-10 here */}
+      <div className="w-[95%] max-w-[1200px] h-[90vh] p-5 bg-[rgba(250,248,248,0.95)] rounded-2xl shadow-custom-lg flex flex-col gap-5 relative z-10">
         <motion.h1
-          className="text-4xl font-bold text-white text-center p-6 bg-gradient-to-br from-custom-blue-dark to-custom-blue-light rounded-2xl shadow-custom-md relative overflow-hidden z-20" // Title z-index increased to 20
+          className="text-4xl font-bold text-white text-center p-6 bg-gradient-to-br from-custom-blue-dark to-custom-blue-light rounded-2xl shadow-custom-md relative overflow-hidden z-20"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -660,12 +653,12 @@ const Showroom = () => {
         </motion.h1>
 
         <div className="flex-1 flex flex-col md:flex-row gap-5 overflow-hidden">
-          <div className="w-full md:w-[340px] bg-gradient-to-br from-custom-blue-dark to-custom-blue-light rounded-2xl p-4 overflow-hidden h-full border border-gray-300 shadow-custom-sm text-custom-gray flex flex-col items-center z-10 relative"> {/* Sidebar z-index set to 10 */}
+          <div className="w-full md:w-[340px] bg-gradient-to-br from-custom-blue-dark to-custom-blue-light rounded-2xl p-4 overflow-hidden h-full border border-gray-300 shadow-custom-sm text-custom-gray flex flex-col items-center z-10 relative">
             <Sidebar
               districts={districts}
               selectedDistrict={selectedDistrict}
               onSelectDistrict={setSelectedDistrict}
-              branches={branches} // Pass all branches to sidebar for nearest branch calculation
+              branches={branches}
               selectedBranch={selectedBranch}
               onSelectBranch={handleSelectBranch}
               onSearchAddress={handleSearchAddress}
@@ -676,13 +669,15 @@ const Showroom = () => {
             />
           </div>
 
-          <BranchMap
-            branches={filteredBranches} // Pass filtered branches to map
-            userLocation={userLocation}
-            selectedDistrict={selectedDistrict}
-            selectedBranch={selectedBranch}
-            accuracy={accuracy}
-          />
+          <div className="w-full md:w-auto flex-1 bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden">
+            <BranchMap
+              branches={filteredBranches}
+              userLocation={userLocation}
+              selectedDistrict={selectedDistrict}
+              selectedBranch={selectedBranch}
+              accuracy={accuracy}
+            />
+          </div>
         </div>
       </div>
 
@@ -700,7 +695,7 @@ const Showroom = () => {
 
           /* Keyframes for pulse glow on nearest branch */
           @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 rgba(255, 215, 0, 0.4); } /* Gold color with transparency */
+            0% { box-shadow: 0 0 0 rgba(255, 215, 0, 0.4); }
             50% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
             100% { box-shadow: 0 0 0 rgba(255, 215, 0, 0.4); }
           }
@@ -727,30 +722,40 @@ const Showroom = () => {
           }
 
           /* Responsive adjustments for smaller screens */
-          @media (max-width: 768px) { /* Adjusted breakpoint for md: from Tailwind */
-            .flex-col {
-              flex-direction: column;
-            }
-
-            .md\\:w-\\[340px\\] { /* Target the sidebar width specifically */
+          @media (max-width: 767px) {
+            .md\\:w-\\[340px\\] {
               width: 100%;
-              min-height: 350px; /* Give sidebar some minimum height on small screens */
+              min-height: 350px;
             }
-
-            .md\\:flex-row { /* Reset flex direction for main content */
+            .md\\:flex-row {
               flex-direction: column;
             }
-
-            .h-\\[90vh\\] { /* Adjust overall container height for small screens */
-              height: auto;
-              min-height: 90vh;
+            .leaflet-container {
+              height: 400px !important; /* Ensure map has a fixed height on mobile */
             }
+          }
 
-            .leaflet-container { /* Ensure map takes available height */
-              height: 400px; /* Fixed height for map on small screens */
+          @media (min-width: 768px) {
+            .md\\:w-\\[340px\\] {
+              min-height: 600px;
             }
+            .leaflet-container {
+              height: 600px !important;
+            }
+          }
+
+          @media (min-width: 1024px) {
+            .lg\\:h-\\[700px\\] {
+              height: 700px;
+            }
+            .leaflet-container {
+              height: 700px !important;
+            }
+          }
+
+          @media (max-width: 640px) {
             .leaflet-control-attribution {
-              display: none; /* Hide attribution on very small screens */
+              display: none;
             }
           }
         `}
